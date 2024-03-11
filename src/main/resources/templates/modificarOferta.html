@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <title>Modificar Oferta</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+
+    <div data-th-replace="~{layout/layout :: encabezado}"></div>
+    <div class="container">
+        <h1 class="text-center">Editar oferta</h1>
+        <form id="formOfertas" action="/consola/guardar-oferta" method="post" th:action="@{/consola/guardar-oferta}" th:object="${oferta}">
+            <div class="mb-3">
+                <label for="oferta" class="form-label">Oferta Educativa:</label>
+                <input type="text" class="form-control" id="oferta" th:field="*{ofertaEducativa}" placeholder="TSU o continuidad">
+                <span class="text-danger" data-th-if="${#fields.hasErrors('ofertaEducativa')}" data-th-errors="*{ofertaEducativa}">error usuario</span>
+            </div>
+
+            <div class="form-check mb-3">
+                <input type="checkbox" class="form-check-input" th:field="*{activo}" id="activoCheckbox" />
+                <label class="form-check-label" for="activoCheckbox">Activo</label>
+            </div>
+
+            <div class="mb-3">
+                <input id="new-ocupa" class="form-control"/>
+                <input type="button" class="btn btn-sm btn-primary" value="Agregar" onclick="agregarRenglon()"/>
+            </div>
+
+            <table class="table table-hover mx-auto">
+                <thead>
+                    <tr class="table-primary">
+                        <th class="text-center">Ocupaciones</th>
+                        <th class="text-center">Eliminar</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaOcupa">
+                    <tr th:each="ocu : ${oferta.ocupaciones}">
+                        <td class="mb-8">
+                            <input name="ocupa[]" id="ocupa[]" class="form-control" th:value="${ocu.ocupacion}" />
+                            <input type="hidden" name="idOc[]" th:value="${ocu.id}" />
+                        </td>
+                        <td class="mb-4">
+                            <input class="btn btn-sm btn-danger" type="button" value="Borrar" onclick="borrarRenglon(event)"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="mb-3">
+                <button type="submit" class="btn btn-success">Guardar Cambios</button>
+                <a type="button" class="btn btn-secondary" href="/ofertaeducativa">Regresar</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function borrarRenglon(evento) {
+            evento.target.parentNode.parentNode.remove();
+        }
+
+        function agregarRenglon() {
+            var dato = document.getElementById("new-ocupa").value;
+            if (dato !== "") {
+                var elemTr = document.createElement("tr");
+                var elemTd1 = document.createElement("td");
+                var elemTd2 = document.createElement("td");
+                var newInput = document.createElement("input");
+                var newInputH = document.createElement("input");
+                var newButton = document.createElement("input");
+
+                newInput.setAttribute("name", "ocupa[]");
+                newInput.setAttribute("id", "ocupa[]");
+                newInput.setAttribute("class", "form-control");
+                newInput.setAttribute("value", dato);
+                newInputH.setAttribute("type", "hidden");
+                newInputH.setAttribute("name", "idOc[]");
+                newInputH.setAttribute("value", "0");
+                newButton.setAttribute("class", "btn btn-sm btn-danger");
+                newButton.setAttribute("type", "button");
+                newButton.setAttribute("value", "Borrar");
+                newButton.addEventListener('click', borrarRenglon);
+
+                elemTd1.appendChild(newInput);
+                elemTd1.appendChild(newInputH);
+                elemTd2.appendChild(newButton);
+                elemTr.appendChild(elemTd1);
+                elemTr.appendChild(elemTd2);
+                document.getElementById("tablaOcupa").appendChild(elemTr);
+
+                document.getElementById("new-ocupa").value = "";
+            } else {
+                alert("No hay datos para agregar");
+            }
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+</html>
