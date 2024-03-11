@@ -4,10 +4,10 @@
  */
 package mx.edu.uteq.HolaMundo.controller;
 
-import io.micrometer.common.util.StringUtils;
 import jakarta.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import mx.edu.uteq.HolaMundo.entity.OcupacionProfesional;
 import mx.edu.uteq.HolaMundo.entity.OfertaEducativa;
 import mx.edu.uteq.HolaMundo.repository.OfertaEducativaRepo;
@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
@@ -111,7 +112,7 @@ public class ControladorOfertaEducativa {
         return "ofertaeducativa::tbl-oferta";
     }
 
-    @PostMapping("/consola/guardar-oferta")
+    @RequestMapping("/api/guardar-oferta")
     public String guardar(@Valid @ModelAttribute("oferta") OfertaEducativa oferta,
             @RequestParam(name = "ocupa", required = false) String[] ocupaciones,
             @RequestParam(name = "idOc", required = false) String[] idOc, Errors errores) {
@@ -119,17 +120,48 @@ public class ControladorOfertaEducativa {
         if (errores.hasErrors()) {
             return "modificarOferta";
         }
-        if (ocupaciones != null) {
-            List<OcupacionProfesional> listaO = new ArrayList<>();
-            for (int i = 0; i < ocupaciones.length; i++) {
-                OcupacionProfesional o = new OcupacionProfesional();
-                o.setId(Integer.parseInt(idOc[i]));
-                o.setOcupacion(ocupaciones[i]);
-                listaO.add(o);
+
+        // Verificar si se proporciona un ID válido
+        if (oferta.getId() != null) {
+            Optional<OfertaEducativa> ofertaExistenteOptional = repo.findById(oferta.getId());
+            if (ofertaExistenteOptional.isPresent()) {
+                // Si la oferta existe, actualiza sus datos
+                OfertaEducativa ofertaExistente = ofertaExistenteOptional.get();
+                ofertaExistente.setOfertaEducativa(oferta.getOfertaEducativa());
+                ofertaExistente.setActivo(oferta.isActivo()); // Actualiza el campo activo
+
+                // Actualiza las ocupaciones si se proporcionan
+                if (ocupaciones != null) {
+                    List<OcupacionProfesional> listaO = new ArrayList<>();
+                    for (int i = 0; i < ocupaciones.length; i++) {
+                        OcupacionProfesional o = new OcupacionProfesional();
+                        o.setId(Integer.parseInt(idOc[i]));
+                        o.setOcupacion(ocupaciones[i]);
+                        listaO.add(o);
+                    }
+                    ofertaExistente.setOcupaciones(listaO);
+                } else {
+                    //Elimina si ocupaciones es null o vacio
+                    ofertaExistente.setOcupaciones(null);
+                }
+                // Guarda la oferta actualizada
+                repo.save(ofertaExistente);
             }
-            oferta.setOcupaciones(listaO);
+        } else {
+            // Si no se proporciona un ID, guarda una nueva oferta
+            if (ocupaciones != null) {
+                List<OcupacionProfesional> listaO = new ArrayList<>();
+                for (int i = 0; i < ocupaciones.length; i++) {
+                    OcupacionProfesional o = new OcupacionProfesional();
+                    o.setId(Integer.parseInt(idOc[i]));
+                    o.setOcupacion(ocupaciones[i]);
+                    listaO.add(o);
+                }
+                oferta.setOcupaciones(listaO);
+            }
+            repo.save(oferta);
         }
-        repo.save(oferta);
+
         return "redirect:/ofertaeducativa";
     }
 

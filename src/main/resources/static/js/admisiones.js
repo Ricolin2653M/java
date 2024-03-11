@@ -65,7 +65,7 @@ async function enviarFrmAdd() {
         },
         body: JSON.stringify(params)
     };
-    await fetch(`${API_URL}/guardar-admision`, options)
+    await fetch(`${API_URL}/consola/guardar-admision`, options)
             .then((response) => {
                 if (response.ok) {
                     alert(`${admi} guardado correctamente`);

@@ -5,8 +5,6 @@
 package mx.edu.uteq.HolaMundo.controller;
 
 import jakarta.validation.Valid;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import java.util.List;
 import mx.edu.uteq.HolaMundo.entity.Admision;
 import mx.edu.uteq.HolaMundo.repository.AdmisionRepo;

@@ -4,19 +4,27 @@
  */
 package mx.edu.uteq.HolaMundo.controller;
 
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
+import mx.edu.uteq.HolaMundo.entity.Admision;
+import mx.edu.uteq.HolaMundo.entity.OfertaEducativa;
+import mx.edu.uteq.HolaMundo.repository.AdmisionRepo;
+import mx.edu.uteq.HolaMundo.repository.OfertaEducativaRepo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-/**
- *
- * @author fonseca
- */
 @Controller
 @Slf4j
 public class ControladorInicio {
-    
+
+    @Autowired
+    private AdmisionRepo admisionRepo;
+
+    @Autowired
+    private OfertaEducativaRepo ofertaEducativaRepo;
+
     String menuInicio = "";
     String menuOferta = "";
     String menuAdmisiones = "";
@@ -30,6 +38,19 @@ public class ControladorInicio {
         model.addAttribute("styleOferta", menuOferta);
         model.addAttribute("styleAdminiones", menuAdmisiones);
         return "index";
+    }
+
+    @GetMapping("/inicio")
+    public String mostrarCarruseles(Model model) {
+        // Obtener los datos reales de la base de datos
+        List<OfertaEducativa> oferta = ofertaEducativaRepo.findAll();
+        List<Admision> admision = (List<Admision>) admisionRepo.findAll();
+
+        // Agregar los datos al modelo
+        model.addAttribute("admision", admision);
+        model.addAttribute("ofertaEducativa", oferta);
+
+        return "carrusel"; // Este es el nombre de la vista HTML
     }
 
 }
