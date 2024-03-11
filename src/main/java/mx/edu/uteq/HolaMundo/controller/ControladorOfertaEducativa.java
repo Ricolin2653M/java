@@ -113,32 +113,24 @@ public class ControladorOfertaEducativa {
 
     @PostMapping("/consola/guardar-oferta")
     public String guardar(@Valid @ModelAttribute("oferta") OfertaEducativa oferta,
-            @RequestParam(name = "ocupa[]", required = false) String[] ocupaciones,
-            @RequestParam(name = "idOc[]", required = false) String[] idOc, Errors errores) {
+            @RequestParam(name = "ocupa", required = false) String[] ocupaciones,
+            @RequestParam(name = "idOc", required = false) String[] idOc, Errors errores) {
 
         if (errores.hasErrors()) {
-            return "frmOfertaEducativa";
+            return "modificarOferta";
         }
-
-        // Manejar las ocupaciones
         if (ocupaciones != null) {
             List<OcupacionProfesional> listaO = new ArrayList<>();
             for (int i = 0; i < ocupaciones.length; i++) {
                 OcupacionProfesional o = new OcupacionProfesional();
-                // Si el id es proporcionado, actualiza el id
-                if (idOc != null && idOc.length > i && StringUtils.isNotBlank(idOc[i])) {
-                    o.setId(Integer.parseInt(idOc[i]));
-                }
+                o.setId(Integer.parseInt(idOc[i]));
                 o.setOcupacion(ocupaciones[i]);
                 listaO.add(o);
             }
-            // Asignar las ocupaciones a la oferta educativa
             oferta.setOcupaciones(listaO);
         }
-
-        // Guardar la oferta educativa
         repo.save(oferta);
-        return "redirect:/consola/oferta-educativa";
+        return "redirect:/ofertaeducativa";
     }
 
 }

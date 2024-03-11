@@ -52,7 +52,7 @@ public class ControladorAdmision {
         return lista;
     }
 
-    @RequestMapping(value = "/guardar-admision",
+    @PostMapping(value = "/guardar-admision",
             consumes = "application/json",
             produces = "application/json")
     public ResponseEntity<?> guardar(@Valid @RequestBody Admision admision,
