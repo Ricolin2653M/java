@@ -64,4 +64,46 @@ public class WebSecurityConfig {
         return http.build();
     }
 
+}/*
+@EnableWebSecurity
+@Configuration
+public class WebSecurityConfig {
+
+    @Autowired
+    private UserDetailsService userDetailsService;
+    
+   @Bean
+    public static BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    
+    @Autowired
+    public void configurerGlobal(AuthenticationManagerBuilder builder) throws Exception {
+        builder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+    }
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+                .authorizeHttpRequests((authz) -> {
+                    authz.requestMatchers("/").permitAll()
+                            .requestMatchers("/alumnos/**").hasRole("USER")
+                            .requestMatchers("/alumnos_agregar/**").hasRole("ADMIN")
+                            .requestMatchers("/alumnos_editar/**")
+                            .hasAnyRole("ADMIN","COORDINADOR")
+                            .requestMatchers("/alumnos_eliminar/**").hasRole("ADMIN")
+                            .anyRequest().authenticated();
+                }
+                )
+                .formLogin((form) -> form
+                .loginPage("/login")
+                .permitAll()
+                )
+                .logout((logout) -> logout.permitAll());
+
+        return http.build();
+    }
 }
+
+*/

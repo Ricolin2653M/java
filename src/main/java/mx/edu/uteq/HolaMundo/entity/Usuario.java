@@ -38,5 +38,4 @@ public class Usuario {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "username")
     private List<Rol> authorities;
-
 }

@@ -4,6 +4,7 @@
  */
 package mx.edu.uteq.HolaMundo.repository;
 
+import java.util.List;
 import mx.edu.uteq.HolaMundo.entity.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -14,5 +15,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface UsuarioRepository extends JpaRepository<Usuario, String> {
     
     public Usuario findByUsername(String username);
+    //public List<Usuario> findByEnable(boolean enable);
 }
 
