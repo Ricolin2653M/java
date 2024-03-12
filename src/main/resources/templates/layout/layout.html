@@ -13,7 +13,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0" data-sec-sec:authorize="isAuthenticated()">
                         <li class="nav-item">
                             <a th:class="${styleInicio}" aria-current="page" href="index.html" data-th-href="@{/}">Inicio</a>
                         </li>
@@ -24,11 +24,18 @@
                             <a th:class="${styleAdminiones}" href="admisiones.html" data-th-href="@{/admisiones}">Admisiones</a>
                         </li>
 
+                        <li>
+                            <b>Usuario:</b> <span sec:authentication="name">Usuario logueado</span>
+                            <b>Roles:</b> <span sec:authentication="principal.authorities">Roles</span>
+
+                        </li>
+                        <li>
+                            <form class="d-flex" method="post" data-th-action="@{/logout}">
+                                <a class="btn btn-outline-success" onclick="this.parentNode.submit();">Logout</a>
+                            </form>
+                        </li>
                     </ul>
 
-                    <form class="d-flex" method="post" data-th-action="@{/logout}">
-                        <button class="btn btn-outline-success" onclick="this.parentNode.submit();">Logout</button>
-                    </form>
                 </div>
             </div>
         </nav>

@@ -39,6 +39,7 @@ public class ControladorInicio {
         model.addAttribute("styleAdminiones", menuAdmisiones);
         return "index";
     }
+    
 
     @GetMapping("/inicio")
     public String mostrarCarruseles(Model model) {

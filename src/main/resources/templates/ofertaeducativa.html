@@ -27,12 +27,13 @@
                                 <li data-th-text="${ocu.ocupacion}"></li>
                             </ul>
                         </td>
-                        <td>
+                        <td >
                             <a data-th-href="@{modificarOferta/}+${dato.id}" type="button" 
                                class="btn btn-info" >
                                 Editar
                             </a>
-                            <a type="button" class="btn btn-danger" data-bs-toggle="modal" 
+                            <a data-sec-authorize="hasRole('ROLE_ADMIN')" 
+                                type="button" class="btn btn-danger" data-bs-toggle="modal" 
                                data-th-id="${dato.id}" data-bs-target="#eliminarModal"
                                data-th-dato="${dato.ofertaEducativa}" 
                                data-th-url="'/eliminarOferta/'+${dato.id}" onclick="setDeleteModalData(this)">
