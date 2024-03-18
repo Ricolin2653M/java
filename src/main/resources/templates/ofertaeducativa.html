@@ -8,7 +8,7 @@
     <body onload="entrar()">
         <div data-th-replace="layout/layout :: encabezado">
         </div>
-        <div class="container-fluid">
+        <div class="container">
             <h1 class="text-center">Oferta educativa</h1>
 
             <table class="table table-hover table-responsive" id="table">
@@ -32,7 +32,7 @@
                                class="btn btn-info" >
                                 Editar
                             </a>
-                            <a data-sec-authorize="hasRole('ROLE_ADMIN')" 
+                            <a data-sec-authorize="hasAnyRole({'ROLE_ADMIN','ROLE_COORDINADOR'})" 
                                 type="button" class="btn btn-danger" data-bs-toggle="modal" 
                                data-th-id="${dato.id}" data-bs-target="#eliminarModal"
                                data-th-dato="${dato.ofertaEducativa}" 

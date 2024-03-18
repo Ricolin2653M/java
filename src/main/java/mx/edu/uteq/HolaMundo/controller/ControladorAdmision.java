@@ -50,7 +50,7 @@ public class ControladorAdmision {
         return lista;
     }
 
-    @PostMapping(value = "/guardar-admision",
+    @PostMapping(value = "/api/guardar-admision",
             consumes = "application/json",
             produces = "application/json")
     public ResponseEntity<?> guardar(@Valid @RequestBody Admision admision,
@@ -90,7 +90,7 @@ public class ControladorAdmision {
         }
     }
 
-    @RequestMapping(value = "/admisiones-borrar", consumes = "application/json")
+    @RequestMapping(value = "/api/admisiones-borrar", consumes = "application/json")
     public ResponseEntity<String> eliminarAdmision(@Valid @RequestBody Admision admision,
             Errors error) throws Exception {
         try {

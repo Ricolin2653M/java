@@ -13,7 +13,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
     <body>
         <div data-th-replace="~{layout/layout :: encabezado}">
         </div>
-        <div class="container-fluid">
+        <div class="container">
             <h1 class="text-center">Agregar</h1>
             <form action="#" method="post" th:action="@{/guardar-oferta}" th:object="${oferta}">
                 <div>
@@ -26,7 +26,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     <label class="form-check-label" for="exampleCheck1">Activo</label>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Guardar</button>
+
+                <div class="mb-4">
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <a type="button" class="btn btn-secondary" href="/ofertaeducativa">Regresar</a>
+                </div>
+                
             </form>
 
         </div>

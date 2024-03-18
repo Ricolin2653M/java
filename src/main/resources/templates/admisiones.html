@@ -7,12 +7,11 @@
 <body onload="entrar()">
     <div data-th-replace="layout/layout :: encabezado"></div>
 
-    <div class="container-fluid">
+    <div class="container">
         <h1 class="text-center">Admisiones</h1>
 
         <!-- Botón para abrir la ventana modal -->
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal2" op="Agregar"
-                url="/guardar-admision">Agregar Admisión</button>
+
 
         <table class="table table-hover table-responsive">
             <thead>
@@ -23,6 +22,8 @@
             </thead>
             <tbody id="tbl-admi"></tbody>
         </table>
+        <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#exampleModal2" op="Agregar"
+                url="/api/guardar-admision">Agregar Admisión</button>
     </div>
 
     <!--Modal agregar-->

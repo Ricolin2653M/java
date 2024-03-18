@@ -65,7 +65,7 @@ async function enviarFrmAdd() {
         },
         body: JSON.stringify(params)
     };
-    await fetch(`${API_URL}/consola/guardar-admision`, options)
+    await fetch(`${API_URL}/api/guardar-admision`, options)
             .then((response) => {
                 if (response.ok) {
                     alert(`${admi} guardado correctamente`);
@@ -92,7 +92,7 @@ async function confirmarEliminar(id) {
         },
         body: JSON.stringify(params)
     };
-    await fetch(`${API_URL}/admisiones-borrar`, options)
+    await fetch(`${API_URL}/api/admisiones-borrar`, options)
         .then((response) => {
             if (response.ok) {
                 alert(`Admisión eliminada correctamente`);

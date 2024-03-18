@@ -4,13 +4,14 @@
  */
 package mx.edu.uteq.HolaMundo.repository;
 
+import java.util.List;
 import mx.edu.uteq.HolaMundo.entity.Admision;
 import org.springframework.data.repository.CrudRepository;
 
 /**
  *
- * @author fonseca
+ * @author x
  */
 public interface AdmisionRepo extends CrudRepository<Admision, Long> {
-    
+    public List<Admision> findByActivo(boolean activo);
 }

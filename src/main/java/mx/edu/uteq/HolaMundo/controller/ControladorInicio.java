@@ -44,14 +44,14 @@ public class ControladorInicio {
     @GetMapping("/inicio")
     public String mostrarCarruseles(Model model) {
         // Obtener los datos reales de la base de datos
-        List<OfertaEducativa> oferta = ofertaEducativaRepo.findAll();
-        List<Admision> admision = (List<Admision>) admisionRepo.findAll();
+        List<OfertaEducativa> oferta = ofertaEducativaRepo.findByActivo(true);
+        List<Admision> admision = (List<Admision>) admisionRepo.findByActivo(true);
 
         // Agregar los datos al modelo
         model.addAttribute("admision", admision);
         model.addAttribute("ofertaEducativa", oferta);
 
-        return "carrusel"; // Este es el nombre de la vista HTML
+        return "carrusel"; 
     }
 
 }

@@ -10,7 +10,7 @@
         <div data-th-replace="~{layout/layout :: encabezado}"></div>
         <div class="container-fluid">
             <h1 class="text-center">Editar Admision</h1>
-            <form action="/guardar-modificacion-admision" method="post" th:action="@{/guardar-modificacion-admision}" th:object="${admision}">
+            <form action="/api/guardar-modificacion-admision" method="post" th:action="@{/api/guardar-modificacion-admision}" th:object="${admision}">
                 <div>
                     <label for="admision">Admision</label>
                     <input type="text" class="form-control" id="nombreAdmision" th:field="*{nombreAdmision}" />

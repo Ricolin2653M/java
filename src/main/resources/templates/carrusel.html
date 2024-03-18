@@ -8,41 +8,85 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     </head>
     <body>
+        <div>
+            <svg class="bd-placeholder-img" width="100%" height="100%" style="height: 60px;" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="true">
+            <rect width="100%" height="100%" fill="var(--bs-secondary-color)"></rect>
+            <foreignObject x="10" y="10" width="100%" height="100%">
+            <div xmlns="http://www.w3.org/1999/xhtml">
+                <h1 style="color: white;">Admisiones:</h1>
+            </div>
+            </foreignObject>
+            </svg>
+        </div>
+
+
         <!-- Carrusel de Admisión -->
         <div id="carruselAdmision" class="carousel slide mb-6" data-bs-ride="carousel">
             <div class="carousel-inner"> 
-                <div class="carousel-item" th:classappend="${#lists.isEmpty(admision) ? '' : 'active'}" th:each="admission, status : ${admision}">
-                    <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="var(--bs-secondary-color)"></rect></svg>
-                    <div class="container">
+                <div class="carousel-item active" th:if="${!#lists.isEmpty(admision)}" th:each="admission, status : ${admision}">
+                    <div class="d-flex justify-content-center"> <!-- Establece el contenedor como flexbox y centra horizontalmente -->
+                        <svg class="bd-placeholder-img" width="100%" height="100%" style="height: 150px" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="true"><rect width="100%" height="100%" fill="var(--bs-secondary-color)"></rect></svg>
+                    </div>
+                    <div class="container text-center"> <!-- Centra el contenido dentro del contenedor -->
                         <div class="carousel-caption text-start">
-                            <h1 th:text="${admission.nombreAdmision}"></h1>
-                            <p>Activo: <span th:text="${admission.activo}"></span></p>
+                            <h2 th:text="${admission.nombreAdmision}"></h2>
                         </div>
                     </div>
                 </div>
             </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carruselAdmision" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carruselAdmision" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
         </div>
 
+
+        <div>
+            <svg class="bd-placeholder-img" width="100%" height="100%" style="height: 60px;" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="true">
+            <rect width="100%" height="100%" fill="var(--bs-secondary-color)"></rect>
+            <foreignObject x="10" y="10" width="80%" height="80%">
+            <div xmlns="http://www.w3.org/1999/xhtml">
+                <h1 style="color: white;">Ofertas educativas:</h1>
+            </div>
+            </foreignObject>
+            </svg>
+        </div>
 
         <!-- Carrusel de Oferta Educativa -->
+
         <div id="carruselOferta" class="carousel slide mb-6" data-bs-ride="carousel">
-            <div class="carousel-inner">
-                <div class="carousel-item" th:classappend="${#lists.isEmpty(ofertaEducativa) ? '' : 'active'}" th:each="ofertaEducativa : ${ofertaEducativa}">
-                    <div class="container">
-                        <div class="carousel-caption">
-                            <h1 th:text="${ofertaEducativa.ofertaEducativa}"></h1>
-                            <p>Activo: <span th:text="${ofertaEducativa.activo}"></span></p>
+            <div class="carousel-inner"> 
+                <div class="carousel-item active" th:if="${!#lists.isEmpty(ofertaEducativa)}" th:each="oferta, status : ${ofertaEducativa}">
+                    <div class="d-flex justify-content-center"> <!-- Establece el contenedor como flexbox y centra horizontalmente -->
+                        <svg class="bd-placeholder-img" width="100%" height="100%" style="height: 250px;" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="true"><rect width="200%" height="200%" fill="var(--bs-secondary-color)"></rect></svg>
+                    </div>
+                    <div class="container text-center"> <!-- Centra el contenido dentro del contenedor -->
+                        <div class="carousel-caption text-start">                            
+                            <h2 th:text="${oferta.ofertaEducativa}"></h2>
                             <p>Ocupaciones:</p>
                             <ul>
-                                <li th:each="ocupacion : ${ofertaEducativa.ocupaciones}" th:text="${ocupacion.ocupacion}"></li>
+                                <li th:each="ocupacion : ${oferta.ocupaciones}" th:text="${ocupacion.ocupacion}"></li>
                             </ul>
+                            <div th:if="${#lists.isEmpty(oferta.ocupaciones)}">
+                                <p>No hay ocupaciones disponibles.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carruselOferta" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carruselOferta" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
         </div>
-
-
 
         <!-- Bootstrap JS -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
