@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,14 +43,72 @@ public class ControladorAdmision {
         model.addAttribute("styleAdminiones", menuAdmisiones);
         return "admisiones";
     }
+    @GetMapping(value = "/listar/admisiones")
+    public String obtenerAdmisiones(Model model){
+        List<Admision>lista = (List<Admision>) repo.findAll();
+        model.addAttribute("datos", lista);
+        return "admisiones::tbl-admisiones";
+    }
+    @GetMapping("/agregar/admision")
+    public String mostrarPaginaAgregarOferta(Model model) {
+        model.addAttribute("admision", new Admision());
+        model.addAttribute("styleInicio", menuInicio);
+        model.addAttribute("styleOferta", menuOferta);
+        model.addAttribute("styleAdminiones", menuAdmisiones);
+        return "agregarAdmision";
+    }
+    @PostMapping("/api/guardar-admision")
+    public String guardarAdmision(@Valid @ModelAttribute("admision") Admision admision, Errors errores) {
+        if (errores.hasErrors()) {
+            return "agregarAdmision";
+        }
+        repo.save(admision);
+        return "redirect:/admisiones";
+    }
+    //Vista para editar un registro
+    @GetMapping("/editar/admision/{id}")
+    public String mostrarPaginaModificarAdmision(@PathVariable Long id, Model model) {
+        Admision admision = repo.findById(id).orElse(null);
 
+        if (admision != null) {
+            
+            model.addAttribute("admision", admision);
+            model.addAttribute("styleInicio", menuInicio);
+            model.addAttribute("styleOferta", menuOferta);
+            model.addAttribute("styleAdminiones", menuAdmisiones);
+
+            return "modificarAdmision";
+        } else {
+            return "redirect:/admisiones";
+        }
+    }
+    
+    //Editar un registro de la base de datos
+    @PostMapping("/api/editar-admision")
+    public String guardarModificacionAdmision(@Valid @ModelAttribute("oferta") Admision admision, Errors errores) {
+        if (errores.hasErrors()) {
+            return "redirect:/modificarAdmision";
+        }
+        repo.save(admision);
+        return "redirect:/admisiones";
+    }
+    
+    //Eliminar un registro por id
+    @GetMapping("/eliminar/admision/{id}")
+    public String eliminarAdmision(@PathVariable Long id) {
+        repo.deleteById(id);
+        return "redirect:/admisiones";
+    }
+
+    /*
+    //  Funcion para mostrar las admisiones
     @RequestMapping(value = "/api/admisiones", method = RequestMethod.GET, produces = "application/json")
     public @ResponseBody
     List obtenerAdmisiones() {
         List<Admision> lista = (List<Admision>) repo.findAll();
         return lista;
     }
-
+     
     @PostMapping(value = "/api/guardar-admision",
             consumes = "application/json",
             produces = "application/json")
@@ -101,5 +160,6 @@ public class ControladorAdmision {
                     .body("Error al eliminar la admisión: " + e.getMessage());
         }
     }
+*/
 
 }

@@ -31,6 +31,7 @@ public class ControladorOfertaEducativa {
     String menuOferta = "";
     String menuAdmisiones = "";
 
+    //Vista de la página con la tabla de los datos de oferta educativa
     @GetMapping("/ofertaeducativa")
     public String paginaOfertaEducativa(Model model) {
         menuInicio = "nav-link";
@@ -44,7 +45,16 @@ public class ControladorOfertaEducativa {
         return "ofertaeducativa";
     }
 
-    @GetMapping("/agregarOferta")
+    //Mostrar en la tabal los datos 
+    @GetMapping(value = "/listar/oferta-educativa")
+    public String obtenerOfertas(Model model) {
+        List<OfertaEducativa> lista = repo.findAll();
+        model.addAttribute("datos", lista);
+        return "ofertaeducativa::tbl-oferta";
+    }
+
+    //Vista para agregar un nuevo registro
+    @GetMapping("/agregar/oferta")
     public String mostrarPaginaAgregarOferta(Model model) {
         model.addAttribute("oferta", new OfertaEducativa());
         model.addAttribute("styleInicio", menuInicio);
@@ -53,16 +63,18 @@ public class ControladorOfertaEducativa {
         return "agregarOferta";
     }
 
-    @PostMapping("/guardar-oferta")
+    //Agrega el nuevo registro
+    @PostMapping("/api/guardar-oferta")
     public String guardarOferta(@Valid @ModelAttribute("oferta") OfertaEducativa oferta, Errors errores) {
         if (errores.hasErrors()) {
-            return "agregarOferta";
+            return "agregar/oferta";
         }
         repo.save(oferta);
         return "redirect:/ofertaeducativa";
     }
 
-    @GetMapping("/modificarOferta/{id}")
+    //Vista para editar un registro
+    @GetMapping("/editar/oferta/{id}")
     public String mostrarPaginaModificarOferta(@PathVariable Long id, Model model) {
         OfertaEducativa oferta = repo.findById(id).orElse(null);
 
@@ -82,37 +94,39 @@ public class ControladorOfertaEducativa {
         }
     }
 
-    @PostMapping("/guardar-modificacion-oferta")
-    public String guardarModificacionOferta(@Valid @ModelAttribute("oferta") OfertaEducativa oferta, Errors errores) {
+    //Editar un registro de la base de datos
+    @PostMapping("/api/editar-oferta")
+    public String guardarModificacionOferta(@Valid @ModelAttribute("oferta") OfertaEducativa oferta,
+            @RequestParam(name = "ocupa", required = false) String[] ocupaciones,
+            @RequestParam(name = "idOc", required = false) String[] idOc, Errors errores) {
         if (errores.hasErrors()) {
             return "redirect:/modificarOferta";
         }
-        OfertaEducativa ofertaExistente = repo.findById(oferta.getId()).orElse(null);
 
-        if (ofertaExistente != null) {
-            oferta.setOcupaciones(ofertaExistente.getOcupaciones());
-            repo.save(oferta);
-
-            return "redirect:/ofertaeducativa";
-        } else {
-            return "redirect:/ofertaeducativa";
+        if (ocupaciones != null) {
+            List<OcupacionProfesional> listaO = new ArrayList<>();
+            for (int i = 0; i < ocupaciones.length; i++) {
+                OcupacionProfesional o = new OcupacionProfesional();
+                o.setId(Integer.parseInt(idOc[i]));
+                o.setOcupacion(ocupaciones[i]);
+                listaO.add(o);
+            }
+            oferta.setOcupaciones(listaO);
         }
+        repo.save(oferta);
+        return "redirect:/ofertaeducativa";
     }
 
-    @GetMapping("/eliminarOferta/{id}")
+    //Eliminar un registro por id
+    @GetMapping("/eliminar/oferta/{id}")
     public String eliminarOferta(@PathVariable Long id) {
         repo.deleteById(id);
         return "redirect:/ofertaeducativa";
     }
 
-    @GetMapping(value = "/api/oferta-educativa")
-    public String obtenerOfertas(Model model) {
-        List<OfertaEducativa> lista = repo.findAll();
-        model.addAttribute("datos", lista);
-        return "ofertaeducativa::tbl-oferta";
-    }
-
-    @RequestMapping("/api/guardar-oferta")
+    //Editar un registro de la bd
+    /*
+    @RequestMapping("/api/editar-oferta")
     public String guardar(@Valid @ModelAttribute("oferta") OfertaEducativa oferta,
             @RequestParam(name = "ocupa", required = false) String[] ocupaciones,
             @RequestParam(name = "idOc", required = false) String[] idOc, Errors errores) {
@@ -164,5 +178,5 @@ public class ControladorOfertaEducativa {
 
         return "redirect:/ofertaeducativa";
     }
-
+     */
 }

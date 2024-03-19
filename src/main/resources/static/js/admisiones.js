@@ -4,23 +4,39 @@ const API_URL = "http://localhost:8080";
 function entrar() {
     console.log("entrando...");
     listarAdmisiones();
-    const formA = document.getElementById('frm');
-    const modal = document.getElementById('modalEliminar');
-    const btnM = document.getElementById('confirmarEliminar');
-    formA.addEventListener('submit', function (e) {
-        e.preventDefault();
-        enviarFrmAdd();
-    });
-    modal.addEventListener('show.bs.modal', event => {
-        const button = event.relatedTarget;
-        const id = button.getAttribute('id');
-        btnM.addEventListener('click', function(e) {
-            e.preventDefault();
-           confirmarEliminar(id); 
-        });
-    });
+//    const formA = document.getElementById('frm');
+//    const modal = document.getElementById('modalEliminar');
+//    const btnM = document.getElementById('confirmarEliminar');
+//    formA.addEventListener('submit', function (e) {
+//        e.preventDefault();
+//        enviarFrmAdd();
+//    });
+//    modal.addEventListener('show.bs.modal', event => {
+//        const button = event.relatedTarget;
+//        const id = button.getAttribute('id');
+//        btnM.addEventListener('click', function(e) {
+//            e.preventDefault();
+//           confirmarEliminar(id); 
+//        });
+//    });
 }
 
+async function listarAdmisiones() {
+    const tabla = document.querySelector("#tbladmi");
+    await fetch(`${API_URL}/listar/admisiones`)
+            .then((response) => response.text())
+            .then((datos) => {
+                let elemBody = document.getElementById("body");
+                let elemBodyNuevo = document.createElement("tbody");
+                elemBodyNuevo.innerHTML = datos;
+                elemBody.replaceWith(elemBodyNuevo);
+               
+            }).catch(error => { 
+                console.log(error);
+            });
+}
+
+/*
 async function listarAdmisiones() {
     const tabla = document.querySelector("#tbl-admi");
     await fetch(`${API_URL}/api/admisiones`)
@@ -44,7 +60,6 @@ async function listarAdmisiones() {
                 }
             });
 }
-
 
 async function enviarFrmAdd() {
     let idElement = document.getElementById('id');
@@ -105,3 +120,4 @@ async function confirmarEliminar(id) {
         });
     
 }
+ */

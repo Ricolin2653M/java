@@ -10,13 +10,17 @@
         </div>
         <div class="container">
             <h1 class="text-center">Oferta educativa</h1>
+            
+            <button type="button" class="btn btn-success mb-2" onclick="AgregarOferta()">
+                Agregar
+            </button>
 
             <table class="table table-hover table-responsive" id="table">
                 <thead>
                     <tr class="table-primary">
                         <th>Carreras</th>
                         <th>Ocupaciones</th>
-                        <th>Acciones</th>
+                        <th class="text-center">Acciones</th>
                     </tr>
                 </thead>
                 <tbody class="table-group-divider" id="body" data-th-fragment="tbl-oferta">
@@ -27,8 +31,8 @@
                                 <li data-th-text="${ocu.ocupacion}"></li>
                             </ul>
                         </td>
-                        <td >
-                            <a data-th-href="@{modificarOferta/}+${dato.id}" type="button" 
+                        <td class="text-center">
+                            <a data-th-href="@{editar/oferta/}+${dato.id}" type="button" 
                                class="btn btn-info" >
                                 Editar
                             </a>
@@ -36,16 +40,13 @@
                                 type="button" class="btn btn-danger" data-bs-toggle="modal" 
                                data-th-id="${dato.id}" data-bs-target="#eliminarModal"
                                data-th-dato="${dato.ofertaEducativa}" 
-                               data-th-url="'/eliminarOferta/'+${dato.id}" onclick="setDeleteModalData(this)">
+                               data-th-url="'/eliminar/oferta/'+${dato.id}" onclick="setDeleteModalData(this)">
                                 Eliminar
                             </a>   
                         </td>
                     </tr>
                 </tbody>
             </table>
-            <button type="button" class="btn btn-success" onclick="AgregarOferta()">
-                Agregar
-            </button>
         </div>
 
         <!-- Modal Eliminar-->
@@ -57,7 +58,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <p>¿Estás seguro de eliminar la oferta <span id="nombreOferta"></span>?</p>
+                        <p>¿Estás seguro de eliminar la oferta <strong><span id="nombreOferta"></span></strong>?</p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -69,7 +70,7 @@
 
         <script>
             function AgregarOferta() {
-                window.location.href = "/agregarOferta";
+                window.location.href = "/agregar/oferta";
             }
             function setDeleteModalData(button) {
                 // Obtener los atributos del botón

@@ -13,9 +13,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
     <body>
         <div data-th-replace="~{layout/layout :: encabezado}">
         </div>
-        <div class="container-fluid">
+        <div class="container">
             <h1 class="text-center">Agregar</h1>
-            <form action="#" method="post" th:action="@{/guardar-admision}" th:object="${admision}">
+            <form action="#" method="post" th:action="@{/api/guardar-admision}" th:object="${admision}">
                 <div>
                     <label for="admision">Admisión:</label>
                     <input type="text" class="form-control" id="admision" th:field="*{nombreAdmision}" placeholder="Periodo">

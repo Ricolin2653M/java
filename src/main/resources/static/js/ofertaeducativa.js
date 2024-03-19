@@ -8,7 +8,7 @@ function entrar() {
 
 async function listarOfertaEducativa() {
     const HTMLResponse = document.querySelector("#tablaOcupa");
-    await fetch(`${API_URL}/api/oferta-educativa`)
+    await fetch(`${API_URL}/listar/oferta-educativa`)
             .then((response) => response.text())
             .then((datos) => {
                 let elemBody = document.getElementById("body");
