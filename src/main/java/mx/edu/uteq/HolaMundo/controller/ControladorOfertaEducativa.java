@@ -30,6 +30,7 @@ public class ControladorOfertaEducativa {
     String menuInicio = "";
     String menuOferta = "";
     String menuAdmisiones = "";
+    String menuUsuarios = "";
 
     //Vista de la página con la tabla de los datos de oferta educativa
     @GetMapping("/ofertaeducativa")
@@ -37,10 +38,12 @@ public class ControladorOfertaEducativa {
         menuInicio = "nav-link";
         menuOferta = "nav-link active fw-bold";
         menuAdmisiones = "nav-link";
+        menuUsuarios = "nav-link";
         //List<OfertaEducativa> oferta = repo.findAll();
         model.addAttribute("styleInicio", menuInicio);
         model.addAttribute("styleOferta", menuOferta);
         model.addAttribute("styleAdminiones", menuAdmisiones);
+        model.addAttribute("styleUsuarios", menuUsuarios);
         //model.addAttribute("datos", oferta);
         return "ofertaeducativa";
     }
@@ -60,6 +63,7 @@ public class ControladorOfertaEducativa {
         model.addAttribute("styleInicio", menuInicio);
         model.addAttribute("styleOferta", menuOferta);
         model.addAttribute("styleAdminiones", menuAdmisiones);
+        model.addAttribute("styleUsuarios", menuUsuarios);
         return "agregarOferta";
     }
 
@@ -87,6 +91,7 @@ public class ControladorOfertaEducativa {
             model.addAttribute("styleInicio", menuInicio);
             model.addAttribute("styleOferta", menuOferta);
             model.addAttribute("styleAdminiones", menuAdmisiones);
+            model.addAttribute("styleUsuarios", menuUsuarios);
 
             return "modificarOferta";
         } else {

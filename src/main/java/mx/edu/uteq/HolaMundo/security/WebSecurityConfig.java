@@ -3,7 +3,6 @@ package mx.edu.uteq.HolaMundo.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -36,13 +35,13 @@ public class WebSecurityConfig {
         http
                 .authorizeHttpRequests((authz) -> {
                     authz.requestMatchers("/").permitAll()
-                            .requestMatchers("/ofertaeducativa/**").hasAnyRole("ADMIN","COORDINADOR")
-                            .requestMatchers("/consola/**").hasAnyRole("ADMIN","COORDINADOR")
-                            .requestMatchers("/agregarOferta/**").hasRole("ADMIN")
-                            .requestMatchers("/api/**").hasRole("ADMIN")
-                            .requestMatchers("/modificarOferta/**")
-                            .hasAnyRole("ADMIN", "COORDINADOR")
-                            .requestMatchers("/eliminarOferta/**").hasRole("ADMIN")
+                            .requestMatchers("/inicio").permitAll()
+                            .requestMatchers("/ofertaeducativa").hasAnyRole("ADMIN","COORDINADOR")
+                            .requestMatchers("/admisiones").hasAnyRole("ADMIN","COORDINADOR")
+                            .requestMatchers("/listar/**").hasAnyRole("ADMIN","COORDINADOR")
+                            .requestMatchers("/api/**").hasAnyRole("ADMIN","COORDINADOR")
+                            .requestMatchers("/eliminar/**").hasRole("ADMIN")
+                            .requestMatchers("/usuarios").hasAnyRole("ADMIN","COORDINADOR")
                             .anyRequest().authenticated();
                 }
                 )

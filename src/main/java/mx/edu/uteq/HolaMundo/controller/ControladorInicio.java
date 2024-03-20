@@ -28,15 +28,18 @@ public class ControladorInicio {
     String menuInicio = "";
     String menuOferta = "";
     String menuAdmisiones = "";
+    String menuUsuarios = "";
 
     @GetMapping("/")
     public String page(Model model) {
         menuInicio = "nav-link active fw-bold";
         menuOferta = "nav-link";
         menuAdmisiones = "nav-link";
+        menuUsuarios = "nav-link";
         model.addAttribute("styleInicio", menuInicio);
         model.addAttribute("styleOferta", menuOferta);
         model.addAttribute("styleAdminiones", menuAdmisiones);
+        model.addAttribute("styleUsuarios", menuUsuarios);
         return "index";
     }
     
@@ -52,6 +55,12 @@ public class ControladorInicio {
         model.addAttribute("ofertaEducativa", oferta);
 
         return "carrusel"; 
+    }
+    @GetMapping("/recupera")
+    public String recuperarContra(Model model){
+        String hola = "hola";
+        model.addAttribute("model", hola);
+        return "recupera";
     }
 
 }

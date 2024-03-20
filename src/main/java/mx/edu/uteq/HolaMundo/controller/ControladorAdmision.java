@@ -32,15 +32,18 @@ public class ControladorAdmision {
     String menuInicio = "";
     String menuOferta = "";
     String menuAdmisiones = "";
+    String menuUsuarios = "";
 
     @GetMapping("/admisiones")
     public String page(Model model) {
         menuInicio = "nav-link";
         menuOferta = "nav-link";
+        menuUsuarios = "nav-link";
         menuAdmisiones = "nav-link active fw-bold";
         model.addAttribute("styleInicio", menuInicio);
         model.addAttribute("styleOferta", menuOferta);
         model.addAttribute("styleAdminiones", menuAdmisiones);
+        model.addAttribute("styleUsuarios", menuUsuarios);
         return "admisiones";
     }
     @GetMapping(value = "/listar/admisiones")
@@ -55,6 +58,7 @@ public class ControladorAdmision {
         model.addAttribute("styleInicio", menuInicio);
         model.addAttribute("styleOferta", menuOferta);
         model.addAttribute("styleAdminiones", menuAdmisiones);
+        model.addAttribute("styleUsuarios", menuUsuarios);
         return "agregarAdmision";
     }
     @PostMapping("/api/guardar-admision")
@@ -76,6 +80,7 @@ public class ControladorAdmision {
             model.addAttribute("styleInicio", menuInicio);
             model.addAttribute("styleOferta", menuOferta);
             model.addAttribute("styleAdminiones", menuAdmisiones);
+            model.addAttribute("styleUsuarios", menuUsuarios);
 
             return "modificarAdmision";
         } else {
