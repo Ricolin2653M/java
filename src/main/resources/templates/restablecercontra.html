@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restablecer contraseña</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h1 class="card-title text-center">Restablecer contraseña</h1>
+                        <form method="post" action="/guardarContra" th:action="@{/guardarContra}">
+                            <div class="mb-3">
+                                <label for="token" class="form-label">Ingresa el token de recuperación:</label>
+                                <input placeholder="Token" class="form-control" type="text" name="token" id="token"/>
+                            </div>
+                            <div class="mb-3">
+                                <label for="username" class="form-label">Ingresa tu nombre de usuario:</label>
+                                <input placeholder="Nombre de usuario" class="form-control" type="text" name="username" id="username"/>
+                            </div>
+                            <div class="mb-3">
+                                <label for="contra" class="form-label">Ingresa tu nueva contraseña:</label>
+                                <input placeholder="Contraseña" class="form-control" type="password" name="contra" id="contra"/>
+                            </div>
+                            <div class="mb-3">
+                                <label for="contra2" class="form-label">Confirma tu contraseña:</label>
+                                <input placeholder="Confirmación de contraseña" class="form-control" type="password" name="contra2" id="contra2"/>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">Restablecer</button> 
+                        </form> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Bootstrap Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -14,6 +14,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Data;
 
@@ -34,7 +35,10 @@ public class Usuario {
     @Column(length = 255)
     @Size(min = 8, max = 255)
     private String password;
+    private String correo;
     private boolean enabled;
+    private String token;
+    private LocalDateTime fechaCreacionToken;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "username")
     private List<Rol> authorities;

@@ -56,11 +56,4 @@ public class ControladorInicio {
 
         return "carrusel"; 
     }
-    @GetMapping("/recupera")
-    public String recuperarContra(Model model){
-        String hola = "hola";
-        model.addAttribute("model", hola);
-        return "recupera";
-    }
-
 }

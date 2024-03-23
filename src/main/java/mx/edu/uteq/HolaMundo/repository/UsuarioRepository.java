@@ -15,7 +15,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface UsuarioRepository extends JpaRepository<Usuario, String> {
     
     public Usuario findByUsername(String username);
-    public Usuario deleteByUsername(String username);
+    void deleteByUsername(String username);
+    public Usuario findByCorreo(String correo);
     //public List<Usuario> findByEnable(boolean enable);
 }
 
