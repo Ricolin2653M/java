@@ -164,10 +164,8 @@ public class ControladorUsuarios {
             return "modificarUsuario";
         }
 
-        // Verificar si el correo electrónico ya existe en otro registro
         Usuario usuarioExistente = repo.findByCorreo(usuario.getCorreo());
         if (usuarioExistente != null && !usuarioExistente.getUsername().equals(usuario.getUsername())) {
-            // Si el correo electrónico ya existe en otro registro, mostrar un mensaje de error
             errores.rejectValue("correo", "error.correo", "El correo electrónico ya está registrado en otro usuario");
             return "modificarUsuario";
         }
