@@ -1,91 +1,195 @@
 <!DOCTYPE html>
-<!--
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
--->
-<html>
+<html lang="en">
+
     <head>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-        <title>Agregar Usuario</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <style>
-            body {
-            background-color: #f8f9fa; 
-            font-family: 'Arial', sans-serif; 
-        }
-
-        .container-form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 60vh;
-        }
-
-        .form-container {
-            max-width: 900px; 
-            width: 90%; 
-            padding: 20px;
-            background-color: #ffffff; 
-            border: 2px solid #ced4da; 
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
-            opacity: 0.95; 
-            margin-top: 50px;
-        }
-
-        .form-label {
-            margin-top: 10px;
-            font-size: 18px; 
-        }
-
-        .form-check-label {
-            margin-bottom: 10px;
-            font-size: 16px; 
-            opacity: 0.7; 
-        }
-
-        .btn-container {
-            text-align: center; 
-            margin-top: 20px;
-        }
-
-        .btn-save {
-            font-size: 16px;
-        }
-        
-        .btn-success {
-            background-color: #34B912; /* Botones de color verde */
-            border-color: #34B912;
-        }
-        </style>
+        <title>Agregar Usuario</title>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     </head>
+
     <body>
         <div data-th-replace="~{layout/layout :: encabezado}">
         </div>
-        <div class="container-fluid container-form">
-            <div class="form-container">
-            <h1 class="text-center">Agregar</h1>
-            <form action="#" method="post" th:action="@{/guardar-usuario}" th:object="${usuario}">
-                <div>
-                    <label for="oferta">Nombre de usuario:</label>
-                    <input type="text" class="form-control" id="username" th:field="*{username}" placeholder="username">
-                    <span class="text-danger" data-th-if="${#fields.hasErrors('username')}" data-th-errors="*{username}">error usuario</span>
-                </div>
-                <div>
-                    <label for="oferta">Contraseña:</label>
-                    <input type="text" class="form-control" id="password" th:field="*{password}" placeholder="contraseña">
-                    <span class="text-danger" data-th-if="${#fields.hasErrors('password')}" data-th-errors="*{password}">error usuario</span>
-                </div>
-                <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck1" th:field="*{enabled}">
-                    <label class="form-check-label" for="exampleCheck1">Activo</label>
-                </div>
+        <div class="container-fluid d-flex justify-content-center align-items-center" style="height: 110vh;">
+            <div class="card w-75">
+                <h1 class="card-header text-center">Agregar Usuario</h1>
+                <div class="card-body">
+                    <form action="#" method="post" th:action="@{/guardar-usuario}" th:object="${usuario}">
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Nombre de usuario:</label>
+                            <input type="text" class="form-control" id="username" th:field="*{username}" placeholder="Nombre de usuario" required>
+                            <span class="text-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">error usuario</span>
+                        </div>
+                        <div class="mb-3">
+                            <label for="correo" class="form-label">Correo: </label>
+                            <input type="email" class="form-control" id="correo" th:field="*{correo}" placeholder="Correo" required>
+                            <span class="text-danger" th:if="${#fields.hasErrors('correo')}" th:errors="*{correo}">error correo</span>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Contraseña:</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="password" th:field="*{password}" placeholder="contraseña" required>
+                                <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                    <i id="toggleIcon" class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <span class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">error contraseña</span>
+                        </div>
+                        <div class="form-check mb-3">
+                            <input type="checkbox" class="form-check-input" id="enabled" th:field="*{enabled}">
+                            <label class="form-check-label" for="enabled">Activo</label>
+                        </div>
+                        <div class="mb-3">
+                            <select id="selectOcupa" class="form-select">
+                                <option value="" class="text-muted">-- Selecciona un rol --</option>
+                                <option value="ROLE_ADMIN">Administrador</option>
+                                <option value="ROLE_COORDINADOR">Coordinador</option>
+                                <option value="ROLE_USER">Usuario</option>
+                            </select>
+                            <input type="button" class="btn btn-sm btn-primary mt-3" value="Agregar rol" onclick="agregarRenglon()">
+                        </div>
+                        <table class="table table-hover mx-auto">
+                            <thead>
+                                <tr class="table-primary">
+                                    <th class="text-center">Roles</th>
+                                    <th class="text-center">Eliminar</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tablaOcupa">
+                                <tr data-th-each="ocu:*{authorities}" data-th-id="r+${ocuStat.index}">
+                                    <td class="mb-8">
+                                        <input name="ocupa"
+                                               id="ocupa[]"
+                                               class="form-control"
+                                               data-th-value="${ocu.authority}"
+                                               readonly
+                                               style="border: none;">
 
-                <center><button type="submit" class="btn btn-success">Guardar</button></center>
-            </form>
+                                        <input type="hidden" name="idOc" 
+                                               data-th-value="${ocu.id}"
+                                               />
+                                    </td>
+                                    <td class="mb-4 text-center">
+                                        <input data-th-id="${ocuStat.index}" class="btn btn-sm btn-danger"
+                                               type="button" value="Borrar"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="mb-3 mt-2">
+                            <button type="submit" class="btn btn-success">Guardar</button>
+                            <a type="button" class="btn btn-secondary" href="/usuarios">Regresar</a>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+        <script>
+                                const togglePassword = document.getElementById('togglePassword');
+                                const password = document.getElementById('password');
+                                const toggleIcon = document.getElementById('toggleIcon');
+
+                                togglePassword.addEventListener('click', function () {
+                                    const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+                                    password.setAttribute('type', type);
+
+                                    // Cambiar el ícono dependiendo del estado del input
+                                    toggleIcon.classList.toggle('fa-eye-slash');
+                                });
+
+                                // Script para mantener los checkboxes de roles marcados
+                                const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+                                checkboxes.forEach(checkbox => {
+                                    checkbox.addEventListener('change', function () {
+                                        checkbox.value = this.checked ? checkbox.getAttribute('value') : '';
+                                    });
+                                });
+                                function borrarRenglon(evento) {
+                                    var elementoBoton = evento.target;
+                                    var idFila = 'r' + elementoBoton.id;
+                                    document.getElementById(idFila).remove();
+                                }
+
+                                var botonesBorrar = document.querySelectorAll('.btn-danger');
+
+                                for (var i = 0; i < botonesBorrar.length; i++) {
+                                    botonesBorrar[i].addEventListener('click', borrarRenglon);
+                                }
+
+                                var idxNew = 1000;
+
+                                function agregarRenglon() {
+                                    var selectElement = document.getElementById("selectOcupa");
+                                    var dato = selectElement.value;
+
+                                    if (dato !== "") {
+                                        const tabla = document.getElementById("tablaOcupa");
+                                        var duplicado = false;
+
+                                        // Verificar si el rol ya existe en la tabla
+                                        var filas = tabla.getElementsByTagName("tr");
+                                        for (var i = 0; i < filas.length; i++) {
+                                            var rolEnTabla = filas[i].querySelector("input[name='ocupa']").value;
+                                            if (rolEnTabla === dato) {
+                                                duplicado = true;
+                                                break;
+                                            }
+                                        }
+
+                                        if (!duplicado) {
+                                            var idxNew = tabla.getElementsByTagName("tr").length + 1;
+
+                                            var elemTr = document.createElement("tr");
+                                            var elemTd1 = document.createElement("td");
+                                            var elemTd2 = document.createElement("td");
+                                            var newInput = document.createElement("input");
+                                            var newInputH = document.createElement("input");
+                                            var newButton = document.createElement("input");
+
+                                            newInput.setAttribute("name", "ocupa");
+                                            newInput.setAttribute("id", "ocupa[]");
+                                            newInput.setAttribute("class", "form-control");
+                                            newInput.setAttribute("value", dato);
+                                            newInput.setAttribute("readonly", "readonly");
+                                            newInput.style.border = "none";
+
+                                            newInputH.setAttribute("type", "hidden");
+                                            newInputH.setAttribute("name", "idOc");
+                                            newInputH.setAttribute("value", "0");
+
+                                            elemTd1.setAttribute("class", "mb-8");
+                                            elemTd2.setAttribute("class", "mb-4 text-center");
+
+                                            elemTd1.appendChild(newInput);
+                                            elemTd1.appendChild(newInputH);
+
+                                            newButton.addEventListener('click', borrarRenglon);
+                                            newButton.setAttribute("id", idxNew);
+                                            newButton.setAttribute("class", "btn btn-sm btn-danger");
+                                            newButton.setAttribute("type", "button");
+                                            newButton.setAttribute("value", "Borrar");
+
+                                            elemTd2.appendChild(newButton);
+
+                                            elemTr.appendChild(elemTd1);
+                                            elemTr.appendChild(elemTd2);
+
+                                            elemTr.setAttribute("id", "r" + idxNew);
+                                            tabla.appendChild(elemTr);
+
+                                            document.getElementById("selectOcupa").value = "";
+                                        } else {
+                                            alert("El rol ya está presente en la tabla.");
+                                        }
+                                    } else {
+                                        alert("Por favor selecciona una opción del menú desplegable.");
+                                    }
+                                }
+        </script>
     </body>
+
 </html>

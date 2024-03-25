@@ -71,7 +71,7 @@ public class ControladorOfertaEducativa {
     @PostMapping("/api/guardar-oferta")
     public String guardarOferta(@Valid @ModelAttribute("oferta") OfertaEducativa oferta, Errors errores) {
         if (errores.hasErrors()) {
-            return "agregar/oferta";
+            return "agregarOferta";
         }
         repo.save(oferta);
         return "redirect:/ofertaeducativa";
@@ -105,7 +105,7 @@ public class ControladorOfertaEducativa {
             @RequestParam(name = "ocupa", required = false) String[] ocupaciones,
             @RequestParam(name = "idOc", required = false) String[] idOc, Errors errores) {
         if (errores.hasErrors()) {
-            return "redirect:/modificarOferta";
+            return "modificarOferta";
         }
 
         if (ocupaciones != null) {

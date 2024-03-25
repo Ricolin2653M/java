@@ -92,7 +92,7 @@ public class ControladorAdmision {
     @PostMapping("/api/editar-admision")
     public String guardarModificacionAdmision(@Valid @ModelAttribute("oferta") Admision admision, Errors errores) {
         if (errores.hasErrors()) {
-            return "redirect:/modificarAdmision";
+            return "modificarAdmision";
         }
         repo.save(admision);
         return "redirect:/admisiones";

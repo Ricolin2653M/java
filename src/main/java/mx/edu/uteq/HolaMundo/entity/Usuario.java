@@ -35,6 +35,7 @@ public class Usuario {
     @Column(length = 255)
     @Size(min = 8, max = 255)
     private String password;
+    @Column(unique = true)
     private String correo;
     private boolean enabled;
     private String token;

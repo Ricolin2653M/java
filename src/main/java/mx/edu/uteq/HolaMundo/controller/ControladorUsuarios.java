@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @Controller
 public class ControladorUsuarios {
+
     @Autowired
     private UsuarioRepository repo;
     String menuInicio = "";
@@ -48,14 +49,15 @@ public class ControladorUsuarios {
         model.addAttribute("styleUsuarios", menuUsuarios);
         return "usuarios";
     }
-    
+
     @GetMapping(value = "/api/usuario")
     public String obtenerAdmisiones(Model model) {
         List<Usuario> lista = (List<Usuario>) repo.findAll();
+        System.out.println("Usuarios: " + lista);
         model.addAttribute("datos", lista);
         return "usuarios::tbl-usuario";
     }
-    
+
     @GetMapping("/agregarUsuario")
     public String mostrarPaginaAgregarUsuario(Model model) {
         model.addAttribute("usuario", new Usuario());
@@ -67,20 +69,48 @@ public class ControladorUsuarios {
     }
 
     @PostMapping("/guardar-usuario")
-    public String guardarUsuario(@Valid @ModelAttribute("usuario") Usuario usuario, Errors errores) {
-        
-        String pass = usuario.getPassword();
-        String passEncriptado = EncriptarPassword.encriptarPassword(pass);
-        usuario.setPassword(passEncriptado);
-        String userExis;
-        userExis = usuario.getUsername();
-        String usuarioBD = repo.findByUsername(usuario.getUsername()).toString();
+    public String guardarNuevoUsuario(@Valid @ModelAttribute("usuario") Usuario usuario,
+            @RequestParam(name = "ocupa", required = false) String[] authorities,
+            @RequestParam(name = "idOc", required = false) String[] idOc, Errors errores) {
+
         if (errores.hasErrors()) {
             return "agregarUsuario";
         }
-        if(userExis == null ? usuarioBD == null : userExis.equals(usuarioBD)){
-            repo.save(usuario);
+
+        // Validar si ya existe un usuario con el mismo nombre de usuario
+        Usuario usuarioExistente = repo.findByUsername(usuario.getUsername());
+        if (usuarioExistente != null) {
+            // Mostrar un mensaje de error indicando que el usuario ya existe
+            errores.rejectValue("username", "error.usuario.duplicado", "El nombre de usuario ya está en uso");
+            return "agregarUsuario";
         }
+
+        // Validar si ya existe un usuario con el mismo correo electrónico
+        usuarioExistente = repo.findByCorreo(usuario.getCorreo());
+        if (usuarioExistente != null) {
+            // Mostrar un mensaje de error indicando que el correo electrónico ya está en uso
+            errores.rejectValue("correo", "error.correo.duplicado", "El correo electrónico ya está registrado");
+            return "agregarUsuario";
+        }
+
+        // Continuar con el proceso de guardar el usuario si pasa las validaciones
+        String pass = usuario.getPassword();
+        String passEncriptado = EncriptarPassword.encriptarPassword(pass);
+        usuario.setPassword(passEncriptado);
+
+        if (authorities != null) {
+            List<Rol> listaO = new ArrayList<>();
+            for (int i = 0; i < authorities.length; i++) {
+                Rol o = new Rol();
+                o.setId(Integer.parseInt(idOc[i]));
+                o.setAuthority(authorities[i]);
+                listaO.add(o);
+            }
+            usuario.setAuthorities(listaO);
+        }
+
+        repo.save(usuario);
+
         return "redirect:/usuarios";
     }
 
@@ -105,12 +135,13 @@ public class ControladorUsuarios {
             return "redirect:/usuarios";
         }
     }
-    
+
     @PostMapping("/guardar-modificacion-usuario")
     public String guardarModificacionOferta(@Valid @ModelAttribute("usuario") Usuario usuario, Errors errores) {
         if (errores.hasErrors()) {
             return "redirect:/modificarOferta";
         }
+
         Usuario usuarioExistente = repo.findByUsername(usuario.getUsername());
 
         if (usuarioExistente != null) {
@@ -123,59 +154,45 @@ public class ControladorUsuarios {
         }
     }
 
-
     @RequestMapping("/api/guardar-usuario")
     public String guardarUsuario(@Valid @ModelAttribute("usuario") Usuario usuario,
-        @RequestParam(name = "ocupa", required = false) String[] authorities,
-        @RequestParam(name = "idOc", required = false) String[] idOc, Errors errores) {
+            @RequestParam(name = "ocupa", required = false) String[] authorities,
+            @RequestParam(name = "idOc", required = false) String[] idOc,
+            Errors errores) {
 
         if (errores.hasErrors()) {
             return "modificarUsuario";
         }
 
-        // Verificar si se proporciona un username válido
-        if (usuario.getUsername() != null) {
-            // Buscar el usuario existente por su nombre de usuario
-            Usuario usuarioExistente = repo.findByUsername(usuario.getUsername());
-            if (usuarioExistente != null) {
-                // Si la oferta existe, actualiza sus datos
-                usuarioExistente.setEnabled(usuario.isEnabled()); // Actualiza el campo activo
-
-                // Actualiza las ocupaciones si se proporcionan
-                if (authorities != null) {
-                    List<Rol> listaO = new ArrayList<>();
-                    for (int i = 0; i < authorities.length; i++) {
-                        Rol o = new Rol();
-                        o.setId(Integer.parseInt(idOc[i]));
-                        o.setAuthority(authorities[i]);
-                        listaO.add(o);
-                    }
-                    usuarioExistente.setAuthorities(listaO);
-                } else {
-                    // Elimina si ocupaciones es null o vacío
-                    usuarioExistente.setAuthorities(null);
-                }
-                // Guarda la oferta actualizada
-                repo.save(usuarioExistente);
-            }
-        } else {
-            // Si no se proporciona un ID, guarda una nueva oferta
-            if (authorities != null) {
-                List<Rol> listaO = new ArrayList<>();
-                for (int i = 0; i < authorities.length; i++) {
-                    Rol o = new Rol();
-                    o.setId(Integer.parseInt(idOc[i]));
-                    o.setAuthority(authorities[i]);
-                    listaO.add(o);
-                }
-                usuario.setAuthorities(listaO);
-            }
-            repo.save(usuario);
+        // Verificar si el correo electrónico ya existe en otro registro
+        Usuario usuarioExistente = repo.findByCorreo(usuario.getCorreo());
+        if (usuarioExistente != null && !usuarioExistente.getUsername().equals(usuario.getUsername())) {
+            // Si el correo electrónico ya existe en otro registro, mostrar un mensaje de error
+            errores.rejectValue("correo", "error.correo", "El correo electrónico ya está registrado en otro usuario");
+            return "modificarUsuario";
         }
+
+        // Actualiza las ocupaciones si se proporcionan
+        if (authorities != null) {
+            List<Rol> listaO = new ArrayList<>();
+            for (int i = 0; i < authorities.length; i++) {
+                Rol o = new Rol();
+                o.setId(Integer.parseInt(idOc[i]));
+                o.setAuthority(authorities[i]);
+                listaO.add(o);
+            }
+            usuario.setAuthorities(listaO);
+        } else {
+            // Elimina si ocupaciones es null o vacío
+            usuario.setAuthorities(null);
+        }
+
+        // Guarda el usuario
+        repo.save(usuario);
 
         return "redirect:/usuarios";
     }
-    
+
     @Transactional
     @GetMapping("/eliminarUsuario/{username}")
     public String eliminarUsuario(@PathVariable String username) {
