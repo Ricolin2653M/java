@@ -53,7 +53,6 @@ public class ControladorUsuarios {
     @GetMapping(value = "/api/usuario")
     public String obtenerAdmisiones(Model model) {
         List<Usuario> lista = (List<Usuario>) repo.findAll();
-        System.out.println("Usuarios: " + lista);
         model.addAttribute("datos", lista);
         return "usuarios::tbl-usuario";
     }

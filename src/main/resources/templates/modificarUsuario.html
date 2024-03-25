@@ -24,12 +24,12 @@
                         <input type="text" class="form-control" id="correo" th:field="*{correo}" placeholder="Correo de usuario">
                         <span class="text-danger" data-th-if="${#fields.hasErrors('correo')}" data-th-errors="*{correo}">error usuario</span>
                     </div>
-                    <div class="form-check mb-3">
+                    <div class="form-check mb-3" data-sec-authorize="hasRole('ROLE_ADMIN')">
                         <input type="checkbox" class="form-check-input" th:field="*{enabled}" id="activoCheckbox" />
                         <label class="form-check-label" for="activoCheckbox">Activo</label>
                     </div>
 
-                    <div class="mb-3">
+                    <div class="mb-3" data-sec-authorize="hasRole('ROLE_ADMIN')">
                         <select id="selectOcupa" class="form-select">
                             <option value="" class="text-muted">-- Selecciona un rol --</option>
                             <option value="ROLE_ADMIN">Administrador</option>
@@ -39,7 +39,7 @@
                         <input type="button" class="btn btn-sm btn-primary mt-3" value="Agregar" onclick="agregarRenglon()">
                     </div>
 
-                    <table class="table table-hover mx-auto">
+                    <table class="table table-hover mx-auto" data-sec-authorize="hasRole('ROLE_ADMIN')">
                         <thead>
                             <tr class="table-primary">
                                 <th class="text-center">Roles</th>
@@ -48,7 +48,7 @@
                         </thead>
                         <tbody id="tablaOcupa">
                             <tr data-th-each="ocu:*{authorities}" data-th-id="r+${ocuStat.index}">
-                                <td class="mb-8">
+                                <td class="mb-8" >
                                     <input name="ocupa"
                                            id="ocupa[]"
                                            class="form-control"
@@ -56,7 +56,7 @@
                                            readonly
                                            style="border: none;">
 
-                                    <input type="hidden" name="idOc" 
+                                    <input  type="hidden" name="idOc" 
                                            data-th-value="${ocu.id}"
                                            />
                                 </td>

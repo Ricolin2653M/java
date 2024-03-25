@@ -12,7 +12,7 @@
         </div>
         <div class="container">
             <h1 class="text-center">Usuarios</h1>
-            <button type="button" class="btn btn-success mb-2" onclick="AgregarUsuario()">
+            <button type="button" class="btn btn-success mb-2" onclick="AgregarUsuario()" data-sec-authorize="hasRole('ROLE_ADMIN')">
                 Agregar
             </button>
 
@@ -33,7 +33,7 @@
                             </ul>
                         </td>
                         <td>
-                            <a data-sec-authorize="hasRole('ROLE_ADMIN')"
+                            <a 
                                data-th-href="@{modificarUsuario/}+${dato.username}" type="button" 
                                class="btn btn-info" >
                                 Editar
